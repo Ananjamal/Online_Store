@@ -12,14 +12,14 @@ return [
     |
     */
 
-    'defaults' => [
-        'guard' => 'web',
-        'passwords' => 'users',
-    ],
     // 'defaults' => [
-    //     'guard' => 'api',
+    //     'guard' => 'web',
     //     'passwords' => 'users',
     // ],
+    'defaults' => [
+        'guard' => 'api',
+        'passwords' => 'users',
+    ],
     /*
     |--------------------------------------------------------------------------
     | Authentication Guards

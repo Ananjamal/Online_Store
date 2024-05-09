@@ -66,4 +66,7 @@ Route::middleware('jwt.verify')->group(function () {
     Route::get('user/{id}/orders', [App\Http\Controllers\Api\Website\OrderController::class, 'show']);
     Route::get('order/{id}/products', [App\Http\Controllers\Api\Website\OrderController::class, 'orderProducts']);
     Route::post('cancel/order/{id}', [App\Http\Controllers\Api\Website\OrderController::class, 'cancelOrder']);
+
+    Route::get('user/{id}/favorites', [App\Http\Controllers\Api\Website\favoriteController::class, 'index']);
+    Route::post('addToFavorites/user/{id}',[App\Http\Controllers\Api\Website\favoriteController::class, 'addToFavorite']);
 });

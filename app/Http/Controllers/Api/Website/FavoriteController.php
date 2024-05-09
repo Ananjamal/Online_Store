@@ -27,20 +27,23 @@ class FavoriteController extends Controller
     }
     public function addToFavorite(Request $request, $id)
     {
-        $user = User::find($id);
-
-        if(!$user){
-            return $this->ApiResponse(null, 'User Not Found', 404);
-        }
         $validator = Validator::make($request->all(), [
-            'product_id' => 'required|numeric',
+            'product_id' => 'required|numeric|exists:products,id',
         ]);
 
         if ($validator->fails()) {
-            return $this->ApiResponse(null, $validator->errors(), 400);
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+        $user = User::find($id);
+        if (!$user) {
+            return $this->ApiResponse(null, 'User Not Found', 404);
         }
 
-        // Create a favorite for the user
+        if ($user->favorites()->where('product_id', $request->product_id)->exists())
+        {
+            return $this->ApiResponse(null, 'Product is already in favorites', 409);
+        }
+
         $favorite = $user->favorites()->create([
             'product_id' => $request->product_id,
         ]);
@@ -51,5 +54,4 @@ class FavoriteController extends Controller
             return $this->ApiResponse(null, 'Failed to add product to favorites', 500);
         }
     }
-
 }

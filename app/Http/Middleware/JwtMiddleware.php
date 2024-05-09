@@ -45,10 +45,13 @@ class JwtMiddleware
         }
 
         // Check if the user has the "admin" role
-        if (!Auth::user()->hasRole('admin')) {
+        if (Auth::user()->hasRole('admin')) {
+            return $next($request);
+        }
+        else {
             return response()->json(['status' => 'You are not allowed to access this resource'], 403);
         }
-
         return $next($request);
+
     }
 }

@@ -39,8 +39,12 @@ class FavoriteController extends Controller
             return $this->ApiResponse(null, 'User Not Found', 404);
         }
 
-        if ($user->favorites()->where('product_id', $request->product_id)->exists())
-        {
+        if (
+            $user
+                ->favorites()
+                ->where('product_id', $request->product_id)
+                ->exists()
+        ) {
             return $this->ApiResponse(null, 'Product is already in favorites', 409);
         }
 
@@ -54,4 +58,21 @@ class FavoriteController extends Controller
             return $this->ApiResponse(null, 'Failed to add product to favorites', 500);
         }
     }
+  public function deleteFromFavorites(Request $request, $id)
+{
+    $user = User::find($id);
+    if (!$user) {
+        return $this->ApiResponse(null, 'User Not Found', 404);
+    }
+
+    $favorite = $user->favorites()->where('product_id', $request->product_id)->first();
+
+    if (!$favorite) {
+        return $this->ApiResponse(null, 'Favorite Product Not found', 404);
+    }
+
+    $favorite->delete();
+    return $this->ApiResponse($favorite, 'Product Deleted From Favorites Successfully', 200);
+}
+
 }

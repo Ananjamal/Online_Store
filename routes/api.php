@@ -69,4 +69,6 @@ Route::middleware('jwt.verify')->group(function () {
 
     Route::get('user/{id}/favorites', [App\Http\Controllers\Api\Website\favoriteController::class, 'index']);
     Route::post('addToFavorites/user/{id}',[App\Http\Controllers\Api\Website\favoriteController::class, 'addToFavorite']);
+    Route::post('deleteFromFavorites/user/{id}',[App\Http\Controllers\Api\Website\favoriteController::class, 'deleteFromFavorites']);
+
 });

@@ -32,7 +32,7 @@ class FavoriteController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return $this->ApiResponse(null, $validator->errors(), 422);
         }
         $user = User::find($id);
         if (!$user) {

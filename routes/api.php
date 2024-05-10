@@ -60,7 +60,7 @@ Route::middleware('jwt.verify', 'role:admin')->group(function () {
     Route::post('admin/complete/order/{id}', [OrderController::class, 'completeOrder']);
 });
 
-Route::middleware('jwt.verify')->group(function () {
+Route::middleware('jwt.Site.verify')->group(function () {
     Route::get('categories', [App\Http\Controllers\Api\Website\ShopController::class, 'categories']);
     Route::get('products', [App\Http\Controllers\Api\Website\ShopController::class, 'products']);
     Route::post('addToFavorites/user/{id}', [App\Http\Controllers\Api\Website\ShopController::class, 'addToFavorite']);
@@ -72,4 +72,12 @@ Route::middleware('jwt.verify')->group(function () {
 
     Route::get('user/{id}/favorites', [App\Http\Controllers\Api\Website\favoriteController::class, 'index']);
     Route::post('deleteFromFavorites/user/{id}', [App\Http\Controllers\Api\Website\favoriteController::class, 'deleteFromFavorites']);
+
+    Route::get('user/{id}/cart', [App\Http\Controllers\Api\Website\CartController::class, 'index']);
+    Route::post('deleteFromCart/user/{id}', [App\Http\Controllers\Api\Website\CartController::class, 'deleteFromCart']);
+    Route::post('updateQuantity/user/{id}', [App\Http\Controllers\Api\Website\CartController::class, 'UpdateQuantity']);
+
+    Route::post('sendMessage/user/{id}', [App\Http\Controllers\Api\Website\ContactController::class, 'sendMessage']);
+
+
 });

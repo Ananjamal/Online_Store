@@ -51,7 +51,7 @@ class JwtMiddleware
         else {
             return response()->json(['status' => 'You are not allowed to access this resource'], 403);
         }
-        return $next($request);
+        // return $next($request);
 
     }
 }

@@ -38,37 +38,38 @@ Route::group(
 
 Route::middleware('jwt.verify', 'role:admin')->group(function () {
     ///////////////////Routes For Admin////////////////////////
-    Route::post('create/category', [CategoryController::class, 'store']);
-    Route::post('update/category/{id}', [CategoryController::class, 'update']);
-    Route::post('delete/category/{id}', [CategoryController::class, 'destroy']);
+    Route::get('admin/categories', [CategoryController::class, 'index']);
+    Route::get('admin/category/{id}', [CategoryController::class, 'show']);
 
-    Route::post('create/product', [ProductController::class, 'store']);
-    Route::post('update/product/{id}', [ProductController::class, 'update']);
-    Route::post('delete/product/{id}', [ProductController::class, 'destroy']);
+    Route::get('admin/products', [ProductController::class, 'index']);
+    Route::get('admin/product/{id}', [ProductController::class, 'show']);
 
-    Route::get('messages', [MessageController::class, 'index']);
-    Route::get('user/{id}/messages', [MessageController::class, 'show']);
+    Route::post('admin/create/category', [CategoryController::class, 'store']);
+    Route::post('admin/update/category/{id}', [CategoryController::class, 'update']);
+    Route::post('admin/delete/category/{id}', [CategoryController::class, 'destroy']);
 
-    Route::get('orders', [OrderController::class, 'index']);
-    Route::get('order/{id}/details', [OrderController::class, 'show']);
-    Route::post('complete/order/{id}', [OrderController::class, 'completeOrder']);
+    Route::post('admin/create/product', [ProductController::class, 'store']);
+    Route::post('admin/update/product/{id}', [ProductController::class, 'update']);
+    Route::post('admin/delete/product/{id}', [ProductController::class, 'destroy']);
 
-    ///////////////////Routes For Website////////////////////////
+    Route::get('admin/messages', [MessageController::class, 'index']);
+    Route::get('admin/user/{id}/messages', [MessageController::class, 'show']);
+
+    Route::get('admin/orders', [OrderController::class, 'index']);
+    Route::get('admin/order/{id}/details', [OrderController::class, 'show']);
+    Route::post('admin/complete/order/{id}', [OrderController::class, 'completeOrder']);
 });
 
 Route::middleware('jwt.verify')->group(function () {
-    Route::get('categories', [CategoryController::class, 'index']);
-    Route::get('category/{id}', [CategoryController::class, 'show']);
-
-    Route::get('products', [ProductController::class, 'index']);
-    Route::get('product/{id}', [ProductController::class, 'show']);
+    Route::get('categories', [App\Http\Controllers\Api\Website\ShopController::class, 'categories']);
+    Route::get('products', [App\Http\Controllers\Api\Website\ShopController::class, 'products']);
+    Route::post('addToFavorites/user/{id}', [App\Http\Controllers\Api\Website\ShopController::class, 'addToFavorite']);
+    Route::post('addToCart/user/{id}', [App\Http\Controllers\Api\Website\ShopController::class, 'addToCart']);
 
     Route::get('user/{id}/orders', [App\Http\Controllers\Api\Website\OrderController::class, 'show']);
     Route::get('order/{id}/products', [App\Http\Controllers\Api\Website\OrderController::class, 'orderProducts']);
     Route::post('cancel/order/{id}', [App\Http\Controllers\Api\Website\OrderController::class, 'cancelOrder']);
 
     Route::get('user/{id}/favorites', [App\Http\Controllers\Api\Website\favoriteController::class, 'index']);
-    Route::post('addToFavorites/user/{id}',[App\Http\Controllers\Api\Website\favoriteController::class, 'addToFavorite']);
-    Route::post('deleteFromFavorites/user/{id}',[App\Http\Controllers\Api\Website\favoriteController::class, 'deleteFromFavorites']);
-
+    Route::post('deleteFromFavorites/user/{id}', [App\Http\Controllers\Api\Website\favoriteController::class, 'deleteFromFavorites']);
 });

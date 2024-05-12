@@ -63,21 +63,21 @@ Route::middleware('jwt.verify', 'role:admin')->group(function () {
 Route::middleware('jwt.Site.verify')->group(function () {
     Route::get('categories', [App\Http\Controllers\Api\Website\ShopController::class, 'categories']);
     Route::get('products', [App\Http\Controllers\Api\Website\ShopController::class, 'products']);
-    Route::post('addToFavorites/user/{id}', [App\Http\Controllers\Api\Website\ShopController::class, 'addToFavorite']);
-    Route::post('addToCart/user/{id}', [App\Http\Controllers\Api\Website\ShopController::class, 'addToCart']);
+    Route::post('addToUserFavorites', [App\Http\Controllers\Api\Website\ShopController::class, 'addToFavorite']);
+    Route::post('addToUserCart', [App\Http\Controllers\Api\Website\ShopController::class, 'addToCart']);
 
-    Route::get('user/{id}/orders', [App\Http\Controllers\Api\Website\OrderController::class, 'show']);
+    Route::get('user/orders', [App\Http\Controllers\Api\Website\OrderController::class, 'show']);
     Route::get('order/{id}/products', [App\Http\Controllers\Api\Website\OrderController::class, 'orderProducts']);
     Route::post('cancel/order/{id}', [App\Http\Controllers\Api\Website\OrderController::class, 'cancelOrder']);
 
-    Route::get('user/{id}/favorites', [App\Http\Controllers\Api\Website\favoriteController::class, 'index']);
-    Route::post('deleteFromFavorites/user/{id}', [App\Http\Controllers\Api\Website\favoriteController::class, 'deleteFromFavorites']);
+    Route::get('user/favorites', [App\Http\Controllers\Api\Website\favoriteController::class, 'index']);
+    Route::post('deleteFromUserFavorites', [App\Http\Controllers\Api\Website\favoriteController::class, 'deleteFromFavorites']);
 
-    Route::get('user/{id}/cart', [App\Http\Controllers\Api\Website\CartController::class, 'index']);
-    Route::post('deleteFromCart/user/{id}', [App\Http\Controllers\Api\Website\CartController::class, 'deleteFromCart']);
-    Route::post('updateQuantity/user/{id}', [App\Http\Controllers\Api\Website\CartController::class, 'UpdateQuantity']);
+    Route::get('user/cart', [App\Http\Controllers\Api\Website\CartController::class, 'index']);
+    Route::post('deleteFromUserCart', [App\Http\Controllers\Api\Website\CartController::class, 'deleteFromCart']);
+    Route::post('updateQuantity', [App\Http\Controllers\Api\Website\CartController::class, 'UpdateQuantity']);
 
-    Route::post('sendMessage/user/{id}', [App\Http\Controllers\Api\Website\ContactController::class, 'sendMessage']);
-
+    Route::post('sendMessage', [App\Http\Controllers\Api\Website\ContactController::class, 'sendMessage']);
+    Route::post('placeOrder', [App\Http\Controllers\Api\Website\CheckoutController::class, 'placeOrder']);
 
 });

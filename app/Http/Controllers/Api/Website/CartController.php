@@ -7,27 +7,28 @@ use App\Models\User;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\ApiResponseTrait;
 
 class CartController extends Controller
 {
     use ApiResponseTrait;
-    public function index(Request $request, $id)
+    public function index(Request $request)
     {
-        $user = User::find($id);
-        if (!$user) {
-            return $this->ApiResponse(null, 'User Not Found', 401);
-        }
-        $cart = Cart::where('user_id', $id)->get();
+        $userId = Auth::id();
+
+        $cart = Cart::where('user_id', $userId)->get();
 
         if ($cart->isEmpty()) {
-            return $this->ApiResponse(null, 'There Is No Product In Cart', 401);
+            return $this->ApiResponse(null, 'There Is No Product In Cart', 404);
         }
+
         return $this->ApiResponse($cart, 'Cart retrieved successfully', 200);
     }
 
-    public function deleteFromCart(Request $request, $id)
+
+    public function deleteFromCart(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'product_id' => 'required|numeric|exists:products,id',
@@ -36,11 +37,8 @@ class CartController extends Controller
         if ($validator->fails()) {
             return $this->ApiResponse(null, $validator->errors(), 422);
         }
-        $user = User::find($id);
-        if (!$user) {
-            return $this->ApiResponse(null, 'User Not Found', 404);
-        }
-
+        $userId = Auth::id();
+        $user = User::find($userId);
         $cart = $user
             ->carts()
             ->where('product_id', $request->product_id)
@@ -53,7 +51,7 @@ class CartController extends Controller
         $cart->delete();
         return $this->ApiResponse($cart, 'Product Deleted From cart Successfully', 200);
     }
-    public function UpdateQuantity(Request $request, $id)
+    public function UpdateQuantity(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'product_id' => 'required|numeric|exists:products,id',
@@ -63,11 +61,8 @@ class CartController extends Controller
         if ($validator->fails()) {
             return $this->ApiResponse(null, $validator->errors(), 422);
         }
-        $user = User::find($id);
-        if (!$user) {
-            return $this->ApiResponse(null, 'User Not Found', 404);
-        }
-
+        $userId = Auth::id();
+        $user = User::find($userId);
         $cart = $user
             ->carts()
             ->where('product_id', $request->product_id)

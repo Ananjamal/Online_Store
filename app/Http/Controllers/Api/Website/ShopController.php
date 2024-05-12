@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\ApiResponseTrait;
 
@@ -23,7 +24,7 @@ class ShopController extends Controller
         $products = Product::all();
         return $this->ApiResponse($products, 'Products returned Successfully', 200);
     }
-    public function addToFavorite(Request $request, $id)
+    public function addToFavorite(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'product_id' => 'required|numeric|exists:products,id',
@@ -32,10 +33,8 @@ class ShopController extends Controller
         if ($validator->fails()) {
             return $this->ApiResponse(null, $validator->errors(), 422);
         }
-        $user = User::find($id);
-        if (!$user) {
-            return $this->ApiResponse(null, 'User Not Found', 404);
-        }
+        $userId = Auth::id();
+        $user = User::find($userId);
 
         if (
             $user
@@ -56,7 +55,7 @@ class ShopController extends Controller
             return $this->ApiResponse(null, 'Failed to add product to favorites', 500);
         }
     }
-    public function addToCart(Request $request, $id)
+    public function addToCart(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'product_id' => 'required|numeric|exists:products,id',
@@ -66,10 +65,8 @@ class ShopController extends Controller
         if ($validator->fails()) {
             return $this->ApiResponse(null, $validator->errors(), 422);
         }
-        $user = User::find($id);
-        if (!$user) {
-            return $this->ApiResponse(null, 'User Not Found', 404);
-        }
+        $userId = Auth::id();
+        $user = User::find($userId);
 
         if (
             $user

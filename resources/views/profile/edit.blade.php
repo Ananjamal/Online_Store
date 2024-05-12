@@ -48,13 +48,16 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
                         <a href="{{ route('dashboard') }}">
-                            <img src="{{ asset('assetsDash/img/zay.png') }}" height="80px" width="80px"
-                                alt="">
+                            <img src="{{ asset('assetsDash/img/zay.png') }}" height="80px" width="80px" alt="">
                         </a>
+                        <div class="ml-4">
+                            <h1 class="font-weight-bold">Hello, <span style="color: #7ab8f6;">{{ Auth::user()->name }}</span></h1>
+                        </div>
                     </div>
                 </div>
+
                 <div class="col-md-6 text-right">
                     <div class="btn-group" role="group" aria-label="Button group">
                         {{-- <button class="btn btn-secondary" type="button">Log Out</button> --}}

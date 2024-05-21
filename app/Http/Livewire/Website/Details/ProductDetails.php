@@ -29,6 +29,7 @@ class ProductDetails extends Component
 
         $existingItem = null;
         if (auth()->check()) {
+            
             $this->user_id = auth()->id();
             $existingItem = Cart::where('user_id', $this->user_id)
                 ->where('product_id', $product->id) // Change this line
